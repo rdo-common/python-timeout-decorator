@@ -3,7 +3,7 @@
 
 Name:           python-%{srcname}
 Version:        0.4.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Timeout decorator for Python
 
 License:        MIT
@@ -43,5 +43,8 @@ A python module which provides a timeout decorator.
 %{python3_sitelib}/timeout_decorator-%{version}-py%{python3_version}.egg-info
 
 %changelog
+* Thu Oct 03 2019 Miro Hrončok <mhroncok@redhat.com> - 0.4.1-2
+- Rebuilt for Python 3.8.0rc1 (#1748018)
+
 * Mon Aug 26 2019 Joel Capitao <jcapitao@redhat.com> - 0.4.1-1
 - Initial packaging
