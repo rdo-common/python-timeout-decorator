@@ -1,3 +1,14 @@
+# Macros for py2/py3 compatibility
+%if 0%{?fedora} || 0%{?rhel} > 7
+%global pyver %{python3_pkgversion}
+%else
+%global pyver 2
+%endif
+%global pyver_bin python%{pyver}
+%global pyver_sitelib %python%{pyver}_sitelib
+%global pyver_install %py%{pyver}_install
+%global pyver_build %py%{pyver}_build
+# End of macros for py2/py3 compatibility
 %bcond_without tests
 %global srcname timeout-decorator
 
@@ -15,32 +26,33 @@ BuildArch:      noarch
 %description
 A python module which provides a timeout decorator.
 
-%package -n python3-%{srcname}
+%package -n python%{pyver}-%{srcname}
 Summary:        %{summary}
-BuildRequires:  python3-devel
-%{?python_provide:%python_provide python3-%{srcname}}
+BuildRequires:  python%{pyver}-devel
+BuildRequires:  python%{pyver}-pytest
+%{?python_provide:%python_provide python%{pyver}-%{srcname}}
 
-%description -n python3-%{srcname}
+%description -n python%{pyver}-%{srcname}
 A python module which provides a timeout decorator.
 
 %prep
 %autosetup -n %{srcname}-%{version}
 
 %build
-%py3_build
+%{pyver_build}
 
 %install
-%py3_install
+%{pyver_install}
 
 %if %{with tests}
 %check
-%{__python3} setup.py test
+python%{pyver} setup.py test
 %endif
 
-%files -n python3-%{srcname}
+%files -n python%{pyver}-%{srcname}
 %doc README.rst
-%{python3_sitelib}/timeout_decorator
-%{python3_sitelib}/timeout_decorator-%{version}-py%{python3_version}.egg-info
+%{pyver_sitelib}/timeout_decorator
+%{pyver_sitelib}/timeout_decorator-%{version}-py?.?.egg-info
 
 %changelog
 * Thu Oct 03 2019 Miro Hrončok <mhroncok@redhat.com> - 0.4.1-2
